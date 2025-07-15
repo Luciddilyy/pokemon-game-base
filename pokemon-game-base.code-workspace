@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"name": "yes",
+			"path": "."
+		},
+		{
+			"name": "pokemon",
+			"path": ".."
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "yes",
+		"discord.state": "Working on something",
+		"discord.interval": null
+	}
+}
