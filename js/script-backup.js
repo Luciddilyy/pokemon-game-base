@@ -10,35 +10,10 @@ const audio = document.querySelector("audio");
 const musicControl = document.querySelector(".music-control");
 
 
+
 let findCharmander = false;
-let findPikachu = false;
+let findPixaku = false;
 let findZubat = false;
-
-//----------------------------------------testing-------------------------------------------------------------- 
-
-
-const pokemon = [charmander, pikachu, zubat];
-
-
-function randomizePokemonPosition(pokemon, topMin, topMax, rightMin, rightMax) {
-    const top = Math.floor(Math.random() * (topMax - topMin + 1)) + topMin;
-    const right = Math.floor(Math.random() * (rightMax - rightMin + 1)) + rightMin;
-    pokemon.style.top = `${top}px`;
-    pokemon.style.right = `${right}px`;
-    pokemon.style.display = "block";
-
-    console.log(`Pokemon position: top=${top}, right=${right}, left=${rightMin}`);
-
-}
-
-
-randomizePokemonPosition(charmander, 2, 98, 130, 216);
-randomizePokemonPosition(zubat, 474, 594, 42, 138);
-randomizePokemonPosition(pikachu, 266, 394, 546, 650);
-
-
-
-//--------------------------------------end testing------------------------------------------------------------
 
 
 
@@ -59,6 +34,7 @@ reset.addEventListener("click", () => {
     window.location.reload();
     reset.style.display = "none";
 });
+
 
 
 
@@ -88,7 +64,7 @@ const interval = setInterval(() => {
 }, 1000);
 
 function finishGame() {
-    if (findCharmander && findPikachu && findZubat) {
+    if (findCharmander && findPixaku && findZubat) {
         clearCharactersAndFinishGame();
 
         const timeOut = setTimeout(() => {
@@ -102,7 +78,6 @@ function finishGame() {
     }
 }
 
-
 function getRightPosition() {
     return parseInt(ash.style.right.split("px")) || 2;
 }
@@ -111,76 +86,67 @@ function getTopPosition() {
     return parseInt(ash.style.top.split("px")) || 2;
 }
 
-//---------------------------------- hitbox system ----------------------------------
-
-function isColliding(ash, pokemon, hitbox = 32) {
-    const ashRight = getRightPosition();
-    const ashTop = getTopPosition();
-    const pokeRight = parseInt(pokemon.style.right);
-    const pokeTop = parseInt(pokemon.style.top);
-
-
-    return (
-        Math.abs(ashRight - pokeRight) <= hitbox &&
-        Math.abs(ashTop - pokeTop) <= hitbox
-    );
-}
-
 function verifyLookPokemon(to) {
     finishGame();
 
-    // ---------------------------------- find pokemon verification ----------------------------------
-    if (!findCharmander && isColliding(ash, charmander)) {
-        charmander.style.display = "block";
-        findCharmander = true;
-        console.log("Caught Charmander!");
-        return;
-    }
-    if (!findZubat && isColliding(ash, zubat)) {
-        zubat.style.display = "block";
-        findZubat = true;
-        console.log("Caught Zubat!");
-        return;
-    }
-    if (!findPikachu && isColliding(ash, pikachu)) {
-        pikachu.style.display = "block";
-        findPikachu = true;
-        console.log("Caught Pikachu!");
-        return;
-    }
-
-
-
-
-
-
-
     const pokemonRightPosition =
-        to === "ArrowLeft" ? `${getRightPosition() - 64}px` : `${getRightPosition() + 64}px`;
+        to === "ArrowLeft"
+            ? `${getRightPosition() - 64}px`
+            : `${getRightPosition() + 64}px`;
 
     if (findCharmander) {
-        const newTopPosition = (to = "ArrowUp" ? `${getTopPosition() + 8}px` : `${getTopPosition() - 8}px`);
+        const newTopPosition = (to = "ArrowUp"
+            ? `${getTopPosition() + 8}px`
+            : `${getTopPosition() - 8}px`);
 
         charmander.style.right = pokemonRightPosition;
         charmander.style.top = newTopPosition;
     }
 
-    if (findPikachu) {
-        const newTopPosition = (to = "ArrowUp" ? `${getTopPosition() + 36}px` : `${getTopPosition() - 36}px`);
+    if (findPixaku) {
+        const newTopPosition = (to = "ArrowUp"
+            ? `${getTopPosition() + 36}px`
+            : `${getTopPosition() - 36}px`);
 
         pikachu.style.right = pokemonRightPosition;
         pikachu.style.top = newTopPosition;
     }
 
     if (findZubat) {
-        const newTopPosition = (to = "ArrowUp" ? `${getTopPosition() + 72}px` : `${getTopPosition() - 72}px`);
+        const newTopPosition = (to = "ArrowUp"
+            ? `${getTopPosition() + 72}px`
+            : `${getTopPosition() - 72}px`);
 
         zubat.style.right = pokemonRightPosition;
         zubat.style.top = newTopPosition;
     }
+
+    if (
+        getTopPosition() >= 2 && getTopPosition() <= 98 && getRightPosition() >= 130 && getRightPosition() <= 216
+    ) {
+        charmander.style.display = "block";
+        findCharmander = true;
+        return;
+    }
+
+    if (
+        getTopPosition() >= 474 && getTopPosition() <= 594 && getRightPosition() <= 138 && getRightPosition() >= 42
+    ) {
+        zubat.style.display = "block";
+        findZubat = true;
+        return;
+    }
+    if (
+        getTopPosition() >= 266 && getTopPosition() <= 394 && getRightPosition() >= 546 && getRightPosition() <= 650
+    ) {
+        pikachu.style.display = "block";
+        findPixaku = true;
+        return;
+    }
 }
 
-// ---------------------------------- ash movement controller ----------------------------------
+
+
 body.addEventListener("keydown", (event) => {
     event.stopPropagation();
 
